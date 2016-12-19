@@ -31,10 +31,14 @@ int main(int argc, char** argv)
     ofs << "extern const char _resource_" << sym << "[] = {" << endl;
 
     size_t lineCount = 0;
-    while (!ifs.eof())
+    while (true)
     {
         char c;
         ifs.get(c);
+
+		if (ifs.eof()) 
+			break;
+
         ofs << "0x" << hex << (unsigned int)c << ", ";
         if (++lineCount == 10) {
             ofs << endl;
