@@ -1,9 +1,9 @@
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
-#include <iostream>
+#include <experimental/filesystem>
+#include <fstream>
+
 
 using namespace std;
-using namespace boost::filesystem;
+using namespace experimental::filesystem;
 
 int main(int argc, char** argv)
 {
@@ -23,9 +23,9 @@ int main(int argc, char** argv)
 
     create_directories(dst.parent_path());
 
-    boost::filesystem::ofstream ofs{dst};
+    ofstream ofs{dst};
 
-    boost::filesystem::ifstream ifs{src};
+    ifstream ifs{src};
 
     ofs << "#include <stdlib.h>" << endl;
     ofs << "extern const char _resource_" << sym << "[] = {" << endl;
