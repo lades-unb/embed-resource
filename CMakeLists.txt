@@ -10,7 +10,7 @@ function(embed_resources out_var)
                 COMMAND embed-resource ${out_f} ${src_f}
                 DEPENDS ${in_f}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                COMMENT "Building binary file for embedding ${out_f}"
+                COMMENT "Building file for embedding ${out_f}"
                 VERBATIM)
         list(APPEND result "${out_f}")
     endforeach()

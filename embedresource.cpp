@@ -1,9 +1,18 @@
-#include <experimental/filesystem>
 #include <fstream>
-
+#include <Poco/File.h>
+#include <Poco/Path.h>
 
 using namespace std;
-using namespace experimental::filesystem;
+using Poco::File;
+using Poco::Path;
+
+void replace(std::string& str, string toSearch, string toReplace) {
+	size_t pos;
+	while ((pos = str.find(toSearch)) != string::npos) {
+		str.replace(pos, 1, toReplace);
+		pos++;
+	}
+}
 
 int main(int argc, char** argv)
 {
@@ -14,18 +23,19 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    path dst{argv[1]};
-    path src{argv[2]};
+	Path dstPath{argv[1]};
+    File dstFile(dstPath);
+	Path srcPath{argv[2]};
+    File srcFile(srcPath);
 
-    string sym = src.filename().string();
-    replace(sym.begin(), sym.end(), '.', '_');
-    replace(sym.begin(), sym.end(), '-', '_');
+	string sym = srcPath.getFileName();
+	replace(sym, ".", "_");
+	replace(sym, "-", "_");
 
-    create_directories(dst.parent_path());
+	File(dstPath.parent()).createDirectories();
 
-    ofstream ofs{dst};
-
-    ifstream ifs{src};
+    ofstream ofs{dstFile.path()};
+    ifstream ifs{srcFile.path()};
 
     ofs << "#include <stdlib.h>" << endl;
     ofs << "extern const char _resource_" << sym << "[] = {" << endl;
@@ -36,7 +46,7 @@ int main(int argc, char** argv)
         char c;
         ifs.get(c);
 
-		if (ifs.eof()) 
+		if (ifs.eof())
 			break;
 
         ofs << "0x" << hex << (unsigned int)c << ", ";
@@ -48,7 +58,7 @@ int main(int argc, char** argv)
 
 
     ofs << "};" << endl;
-    ofs << "extern const size_t _resource_" << sym << "_len = sizeof(_resource_" << sym << ");";
+    ofs << "extern const size_t _resource_" << sym << "_len = sizeof(_resource_" << sym << ");" << endl;
 
     return EXIT_SUCCESS;
 }
