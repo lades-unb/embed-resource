@@ -38,6 +38,8 @@ int main(int argc, char** argv)
     ifstream ifs{srcFile.path()};
 
     ofs << "#include <stdlib.h>" << endl;
+    ofs << "#pragma warning(disable: 4305)" << endl;
+    ofs << "#pragma warning(disable: 4309)" << endl;
     ofs << "extern const char _resource_" << sym << "[] = {" << endl;
 
     size_t lineCount = 0;
