@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <string>
 
 class Resource {
 public:
@@ -18,7 +19,10 @@ private:
     const size_t data_len;
 
 };
-#define LOAD_RESOURCE(RESOURCE) ([]() {                      \
+
+#define _LOAD(RESOURCE) ([]() {                      \
         extern const char _resource_##RESOURCE[]; extern const size_t _resource_##RESOURCE##_len;   \
         return Resource(_resource_##RESOURCE, _resource_##RESOURCE##_len);  \
-    })()
+})()
+
+#define LOAD_RESOURCE(RESOURCE) _LOAD(RESOURCE)
