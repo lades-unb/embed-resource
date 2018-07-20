@@ -18,5 +18,6 @@ function(embed_resources out_var)
 endfunction()
 
 add_executable(embed-resource embedresource.cpp)
+target_link_libraries(embed-resource iphlpapi)
 
 set(EMBED_RES_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
